@@ -11,13 +11,15 @@ class Particle:
         velocity=np.array([0, 0, 0], dtype=float),
         acceleration=np.array([0, -10, 0], dtype=float),
         name='Ball',
-        mass=1.0
+        mass=1.0,
+        G = 6.67408E-11
         ):
         self.position = np.array(position, dtype=float)
         self.velocity = np.array(velocity, dtype=float)
         self.acceleration = np.array(acceleration, dtype=float)
         self.name = name
         self.mass = mass
+        self.G = G
         
 
     def __str__(self):
@@ -28,4 +30,7 @@ class Particle:
     def update(self, deltaT):
         self.position = self.position + self.velocity*deltaT
         self.velocity = self.velocity + self.acceleration*deltaT
+
+    def updateGravitationalAcceleration(self, body):
+        placeholder
 
