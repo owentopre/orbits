@@ -32,5 +32,5 @@ class Particle:
         self.velocity = self.velocity + self.acceleration*deltaT
 
     def updateGravitationalAcceleration(self, body):
-        placeholder
+        self.acceleration = #-GM/r2*r_hat
 
