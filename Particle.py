@@ -31,6 +31,7 @@ class Particle:
         self.position = self.position + self.velocity*deltaT
         self.velocity = self.velocity + self.acceleration*deltaT
 
-    def updateGravitationalAcceleration(self, body):
-        self.acceleration = #-GM/r2*r_hat
-
+    def updateGravitationalAcceleration(self, body):    
+        dist = np.sqrt(((self.position[0]-body.position[0])**2)+((self.position[1]-body.position[1])**2)+((self.position[2]-body.position[2])**2))
+        if(dist != 0):
+            self.acceleration = (-self.G*body.mass*(self.position-body.position))/(dist**3)
