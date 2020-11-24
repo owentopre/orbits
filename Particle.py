@@ -1,5 +1,6 @@
 import math
 import numpy as np
+import copy
 
 class Particle:
     '''
@@ -35,3 +36,7 @@ class Particle:
         dist = np.sqrt(((self.position[0]-body.position[0])**2)+((self.position[1]-body.position[1])**2)+((self.position[2]-body.position[2])**2))
         if(dist != 0):
             self.acceleration = (-self.G*body.mass*(self.position-body.position))/(dist**3)
+
+    def kineticEnergy(self):
+        K_Energy = 0.5*self.mass*(np.linalg.norm(self.velocity))**2
+        return K_Energy
