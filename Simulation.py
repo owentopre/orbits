@@ -1,5 +1,6 @@
 import numpy as np
 from Particle import Particle
+import copy
 
 earthMass = 5.97237e24     # https://en.wikipedia.org/wiki/Earth
 earthRadius = 63710 * 1e3  # https://en.wikipedia.org/wiki/Earth
@@ -20,22 +21,19 @@ Satellite = Particle(
     mass=100.
 )
 
-for a in range(2000):
+time=0
+n=0
+Data = []
+
+for a in range(200000):
+    time=time+6
     for b in [Earth, Satellite]:
         for c in [Earth, Satellite]:
             b.updateGravitationalAcceleration(c)
         b.update(6)
-
-        
-
-
-
-#================
-'''
-print("The Earth and Satellites Location after {0} seconds is:".format((2000*6)))
-for particle in [Earth, Satellite]:
-    print("  Particle: {}".format(particle.name))
-    print("    Mass: {0:.3e}, ".format(particle.mass))
-    for attribute in ["position", "velocity", "acceleration"]:
-        print("    {}: {}".format(attribute, particle.__getattribute__(attribute) + 0.0))  # add 0.0 to avoid negative zeros!
-'''
+    #print(n)
+    #print(time)
+    if (n%100 == 0) or (n == 0):
+        Data.append([time, copy.deepcopy(Earth), copy.deepcopy(Satellite)])
+    n=n+1
+np.save("TwoBodyTest", Data, allow_pickle=True)
