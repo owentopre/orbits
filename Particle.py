@@ -23,6 +23,9 @@ class Particle:
         The universal gravitational constant
 
     Methods:
+    update
+    updateGravitationalAcceleration
+    kineticEnergy
 
     '''
     def __init__(
@@ -79,7 +82,9 @@ class Particle:
         # if(dist != 0):
         #     self.acceleration = (-self.G*body.mass*(self.position-body.position))/(dist**3)
         dist = np.sqrt(((self.position[0]-body.position[0])**2)+((self.position[1]-body.position[1])**2)+((self.position[2]-body.position[2])**2))
-        self.acceleration += (-self.G*body.mass*(self.position-body.position))/(dist**3)
+        self.acceleration[0] += (-self.G*body.mass*(self.position[0]-body.position[0]))/(dist**3)
+        self.acceleration[1] += (-self.G*body.mass*(self.position[1]-body.position[1]))/(dist**3)
+        self.acceleration[2] += (-self.G*body.mass*(self.position[2]-body.position[2]))/(dist**3)
         
 
     def kineticEnergy(self):
