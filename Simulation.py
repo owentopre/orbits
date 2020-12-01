@@ -36,7 +36,7 @@ Data = []
 for a in range(200000):
     time=time+6
     for b in bodies:
-        b.acceleration = 0
+        b.acceleration = []
         for c in bodies:
             if b.index != c.index:
                 b.updateGravitationalAcceleration(c)
