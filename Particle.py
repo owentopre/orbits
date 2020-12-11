@@ -10,7 +10,7 @@ class Particle:
     Inputs
     ------
     position : array
-          A numpy array with 3 floats representing the particle's starting position in 3d space
+      A numpy array with 3 floats representing the particle's starting position in 3d space
     velocity : array
         A numpy array with 3 floats representing the particle's starting velocity through 3d space
     acceleration : array
@@ -76,6 +76,7 @@ class Particle:
         self.velocity = self.velocity + self.acceleration*deltaT
 
     def update_2(self, deltaT):
+        #Euler-Cromer
         self.velocity = self.velocity + self.acceleration*deltaT
         self.position = self.position + self.velocity*deltaT
         
