@@ -12,9 +12,10 @@ from Bodies import bodies
 time=0
 n=0
 Data = []
-deltaT = 60*60*24 
+deltaT = 60*30
+days = int((60*60*24)/deltaT)
 
-for a in range(1000):
+for a in range(365*days):
     time=time+deltaT
     items = [time]
     for b in bodies:
@@ -22,14 +23,8 @@ for a in range(1000):
         for c in bodies:
             if b.index != c.index:
                 b.updateGravitationalAcceleration(c)
-        b.update_1(deltaT)
+        b.update_2(deltaT)
         print(time)
-    #print(n)
-    #print(time)
-    #if (n%100 == 0) or (n == 0):
-        # print(n)
-        # print(time)
-        # print(b.acceleration)
     for d in bodies:
         items.append(copy.deepcopy(d))
     n=n+1
@@ -39,37 +34,28 @@ np.save("TwoBodyTest", Data, allow_pickle=True)
 
 Data = np.load("TwoBodyTest.npy", allow_pickle=True)  
 
-sun_x = []
-sun_y = []
-print(Data[2])
-print(Data[0][1].name)
+names = []
 
-for i in range(len(Data)):
-    #print(i)
-    sun_x.append(Data[i][1].position[0])
-    sun_y.append(Data[i][1].position[1])
+for a in range(len(bodies)):
+    names.append(bodies[a].name)
 
-plt.plot(sun_x, sun_y, label='trajectory')
-plt.xlabel('sun x')
-plt.ylabel('sun y')
+planets = [3, 4]
+
+x = []
+y = []
+
+for a in planets:
+    for b in range(len(Data)):
+        x.append(Data[b][a + 1].position[0])
+        y.append(Data[b][a + 1].position[1])
+    plt.plot(
+        x,
+        y,
+        label = bodies[a].name
+    )
+    x = []
+    y = []
 plt.legend()
 plt.show()
-
-
-mercury_x = []
-mercury_y = []
-
-for l in range(len(Data)):
-    print(l)
-    mercury_x.append(Data[l][2].position[0])
-    mercury_y.append(Data[l][2].position[1])
-
-
-plt.plot(mercury_x, mercury_y, label='trajectory')
-plt.xlabel('mer x')
-plt.ylabel('mer y')
-plt.legend()
-plt.show()
-
 
 #print(Data[0][1].kineticEnergy())
