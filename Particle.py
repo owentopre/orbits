@@ -1,8 +1,7 @@
 import math
 import numpy as np
 import copy
-from poliastro import constants
-from astropy import constants as const
+import scipy.constants as const
 
 class Particle:
     '''
@@ -11,7 +10,7 @@ class Particle:
     Inputs
     ------
     position : array
-          A numpy array with 3 floats representing the particle's starting position in 3d space
+      A numpy array with 3 floats representing the particle's starting position in 3d space
     velocity : array
         A numpy array with 3 floats representing the particle's starting velocity through 3d space
     acceleration : array
@@ -77,6 +76,7 @@ class Particle:
         self.velocity = self.velocity + self.acceleration*deltaT
 
     def update_2(self, deltaT):
+        #Euler-Cromer
         self.velocity = self.velocity + self.acceleration*deltaT
         self.position = self.position + self.velocity*deltaT
         
@@ -87,9 +87,8 @@ class Particle:
         #     self.acceleration = (-self.G*body.mass*(self.position-body.position))/(dist**3)
         dist = np.sqrt(((self.position[0]-body.position[0])**2)+((self.position[1]-body.position[1])**2)+((self.position[2]-body.position[2])**2))
         self.acceleration += (-self.G*body.mass*(self.position-body.position))/(dist**3)
-        
-        
+           
 
     def kineticEnergy(self):
-        K_Energy = 0.5*self.mass*(np.linalg.norm(self.velocity))**2
+        K_Energy = 0.5*self.mass*(np.linalg.norm(self.velocity))**2 
         return K_Energy
