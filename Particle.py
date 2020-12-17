@@ -35,7 +35,8 @@ class Particle:
         name='Ball',
         mass=1.0,
         index = 0,
-        G = float(const.G)
+        G = float(const.G),
+        P_Energy=0.0
         ):
         """
         Construsts the parameters of the particle, and gives defaults unless they are overwritten
@@ -62,6 +63,7 @@ class Particle:
         self.mass = mass
         self.index = index
         self.G = G
+        self.P_Energy = P_Energy
         
 
     def __str__(self):
@@ -70,25 +72,28 @@ class Particle:
         )
 
     def update_1(self, deltaT):
-        #temporary as is only Euler algorithm  
-        #print(str(self.position)+", "+str(self.velocity)+", "+str(self.acceleration)+", "+str(deltaT))
+        #Euler Approximation
+        
         self.position = self.position + self.velocity*deltaT
         self.velocity = self.velocity + self.acceleration*deltaT
 
     def update_2(self, deltaT):
-        #Euler-Cromer
+        #Euler-Cromer Approximation
         self.velocity = self.velocity + self.acceleration*deltaT
         self.position = self.position + self.velocity*deltaT
         
-    def updateGravitationalAcceleration(self, body):  
-        
-        # dist = np.sqrt(((self.position[0]-body.position[0])**2)+((self.position[1]-body.position[1])**2)+((self.position[2]-body.position[2])**2))
-        # if(dist != 0):
-        #     self.acceleration = (-self.G*body.mass*(self.position-body.position))/(dist**3)
+    def updateGravitationalAcceleration(self, body):
         dist = np.sqrt(((self.position[0]-body.position[0])**2)+((self.position[1]-body.position[1])**2)+((self.position[2]-body.position[2])**2))
-        self.acceleration += (-self.G*body.mass*(self.position-body.position))/(dist**3)
-           
+        self.acceleration += (-self.G*body.mass*(self.position-body.position))/(dist**3)       
 
     def kineticEnergy(self):
         K_Energy = 0.5*self.mass*(np.linalg.norm(self.velocity))**2 
         return K_Energy
+
+    def potentialEnergy(self, body):
+        dist = np.sqrt(((self.position[0]-body.position[0])**2)+((self.position[1]-body.position[1])**2)+((self.position[2]-body.position[2])**2))
+        self.P_Energy += (-self.G*body.mass*self.mass)/dist
+
+    def momentum(self):
+        momentum = self.mass*self.velocity
+        return momentum
