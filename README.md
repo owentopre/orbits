@@ -15,3 +15,5 @@ Then the Simulation.py file should be run with time scale, step and approximatio
 Then list the bodies you wish to plot in the Plot.py 'planets' array (using their index in the 'bodies' array from Bodies.py)
 
 Run Plot.py to show a graph of the xy positions of the bodies supplied
+
+[![astropy](http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat)](http://www.astropy.org/)
