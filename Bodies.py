@@ -30,11 +30,6 @@ def transformation(pos, vel):
     return (position, velocity)
 
 
-
-pos_marsT, vel_marsT = get_body_barycentric_posvel("mars", Time("2020-1-16 00:00:00.0", scale="tdb"), ephemeris="jpl")
-(pos_marsT_2, vel_marsT_2) = transformation(pos_marsT, vel_marsT)
-
-
 m_sun = (constants.GM_sun / G).value
 pos_sun, vel_sun = get_body_barycentric_posvel("sun", t, ephemeris="jpl")
 (pos_sun_2, vel_sun_2) = transformation(pos_sun, vel_sun)

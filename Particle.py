@@ -5,7 +5,7 @@ import scipy.constants as const
 
 class Particle:
     '''
-    A class representing a particle.
+    A class representing a particle. Use the methods to update the particle's initial conditions over time or to find out the particle's current conditions
     
     Inputs
     ------
@@ -19,12 +19,29 @@ class Particle:
         A string that is used as a name for the particle
     mass : float
         A floating point number used as the particle's mass
+    index : int
+        An integer corrosponding to its position in the 'bodies' array
+    G: float
+        Universal Gravitational Constant
+    P_Energy: Float
+        The particle's gravitational potential energy (must be updated using method to be accurate)
     
 
     Methods:
-    update
+    update_1
+        Euler approximation
+    update_2
+        Euler-Cromer approximation
+    update_3
+        Verlet approximation
     updateGravitationalAcceleration
+        Superposition of the gravitational acceleration of all bodies fed into this method on the particle
     kineticEnergy
+        Kinetic energy of the particle
+    potentialEnergy
+        Potential energy of the particle as a super position of all bodies fed into this method on the particle
+    momentum
+        3-momentum of the particle
 
     '''
     def __init__(
@@ -53,6 +70,12 @@ class Particle:
                 A string that is used as a name for the particle
             mass : float
                 A floating point number used as the particle's mass
+            index : int
+                An integer corrosponding to its position in the 'bodies' array
+            G: float
+                Universal Gravitational Constant
+            P_Energy: Float
+                The particle's gravitational potential energy (must be updated using method to be accurate)
             
             
         """
@@ -81,6 +104,11 @@ class Particle:
         #Euler-Cromer Approximation
         self.velocity = self.velocity + self.acceleration*deltaT
         self.position = self.position + self.velocity*deltaT
+
+    def update_3(self, deltaT, acceleration):
+        #Verlet Approximation
+        self.position = self.position + self.velocity*deltaT + 0.5*self.acceleration*deltaT**2
+        self.velocity = self.velocity + 0.5*(acceleration + self.acceleration)*deltaT
         
     def updateGravitationalAcceleration(self, body):
         dist = np.sqrt(((self.position[0]-body.position[0])**2)+((self.position[1]-body.position[1])**2)+((self.position[2]-body.position[2])**2))

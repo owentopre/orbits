@@ -8,7 +8,6 @@ from poliastro import constants
 from spiceypy import sxform, mxvg
 import matplotlib.pyplot as plt 
 from Bodies import bodies
-from Bodies import (pos_marsT_2, vel_marsT_2)
 
 #-------------------
 
@@ -40,10 +39,14 @@ for a in bodies:
 time=0 #starting the simulation from 0 seconds
 n=0 #starting the simulation from 0 steps
 
+hours = 240 #change this value to affect the size of deltaT
+days = 365*100 #change this value to affect the simulation time
+approximation = 1 #1=Euler 2=Euler-Cromer 3=Verlet
+
 Data = []
-deltaT = 60*60*12
-days = ((60*60*24)/deltaT)
-sim_time = int(50*days)
+deltaT = 60*60*hours
+day = ((60*60*24)/deltaT)
+sim_time = int(days*day)
 
 for a in range(sim_time):
     time=time+deltaT
@@ -53,37 +56,23 @@ for a in range(sim_time):
         for c in bodies:
             if b.index != c.index:
                 b.updateGravitationalAcceleration(c)
-        b.update_1(deltaT) #change to b.update_2(deltaT) for Euler-Cromer approximation
+        if approximation == 1:
+            b.update_1(deltaT) 
+        if approximation == 2:
+            b.update_2(deltaT)
+        if approximation == 3:
+            b.update_1(deltaT)
+            for c in bodies:
+                if b.index != c.index:
+                    b.updateGravitationalAcceleration(c)
+            b.update_3(deltaT)
         #print(time)
     for d in bodies:
         items.append(copy.deepcopy(d))
     n=n+1
     Data.append(items)
 
-np.save("TwoBodyTest", Data, allow_pickle=True)
-
-Data = np.load("TwoBodyTest.npy", allow_pickle=True)  
-
-#-------------------
-
-planets = [] #List bodies to be plotted here, using their index in the bodies array, ie. their index particle attribute
-
-x = []
-y = []
-
-for a in planets:
-    for b in range(len(Data)):
-        x.append(Data[b][a + 1].position[0])
-        y.append(Data[b][a + 1].position[1])
-    plt.plot(
-        x,
-        y,
-        label = bodies[a].name
-    )
-    x = []
-    y = []
-plt.legend()
-plt.show()
+np.save("SimulationLog", Data, allow_pickle=True)
 
 #-------------------
 
@@ -109,10 +98,3 @@ for a in bodies:
     momentum2 += a.momentum()
 
 #Finding Energy and Momentum after the simulation
-
-
-print(bodies[5].position)
-print(bodies[5].velocity)
-
-print(pos_marsT_2)
-print(vel_marsT_2)
